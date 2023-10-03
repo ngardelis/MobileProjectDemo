@@ -14,17 +14,26 @@ struct LoginView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             VStack(spacing: 40) {
                 CustomTextField(placeHolder: "UserID", value: $username)
                 CustomTextField(placeHolder: "Κωδικός", value: $password, isPasswordField: true)
             }
-            Button(action: {
-                login()
-            }, label: {
-                Text("Sign in")
-            })
+            Spacer()
+            signInButton
         }
-        
+    }
+    
+    var signInButton: some View {
+        Button { login() }
+        label: {
+            ZStack {
+                Image("btn_rounded")
+                Text("Σύνδεση")
+                    .font(.title)
+                    .foregroundColor(Color("dollar_bill"))
+            }
+        }
     }
     
     func login() {
@@ -50,7 +59,8 @@ struct CustomTextField: View {
                 if isPasswordField {
                     Button {
                         showPassword.toggle()
-                    } label: { Text("Προβολή").fontWeight(.semibold) }.foregroundColor(.green).font(.title3)
+                    } label: { Text("Προβολή").fontWeight(.semibold) }
+                    .foregroundColor(Color("forest_green")).font(.title3)
                 }
             }
             if isPasswordField && showPassword {
@@ -62,7 +72,7 @@ struct CustomTextField: View {
             }
             Divider()
              .frame(height: 2)
-             .background(Color.green)
+             .background(Color("50a235_green"))
              .offset(y: -2)
         }.frame(width: 300)
     }
