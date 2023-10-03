@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		ED2729432ACC20B9004D18DC /* MobileProjectDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2729422ACC20B9004D18DC /* MobileProjectDemoApp.swift */; };
-		ED2729452ACC20B9004D18DC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2729442ACC20B9004D18DC /* ContentView.swift */; };
+		ED0BB6342ACC4EDE00288CF4 /* MainPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */; };
+		ED2729432ACC20B9004D18DC /* AppEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2729422ACC20B9004D18DC /* AppEntry.swift */; };
 		ED2729472ACC20BA004D18DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2729462ACC20BA004D18DC /* Assets.xcassets */; };
 		ED27294A2ACC20BA004D18DC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2729492ACC20BA004D18DC /* Preview Assets.xcassets */; };
+		ED2729512ACC21FD004D18DC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2729502ACC21FD004D18DC /* LoginView.swift */; };
+		ED2729542ACC2718004D18DC /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2729532ACC2718004D18DC /* Auth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageView.swift; sourceTree = "<group>"; };
 		ED27293F2ACC20B9004D18DC /* MobileProjectDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileProjectDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		ED2729422ACC20B9004D18DC /* MobileProjectDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileProjectDemoApp.swift; sourceTree = "<group>"; };
-		ED2729442ACC20B9004D18DC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		ED2729422ACC20B9004D18DC /* AppEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEntry.swift; sourceTree = "<group>"; };
 		ED2729462ACC20BA004D18DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED2729492ACC20BA004D18DC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		ED2729502ACC21FD004D18DC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		ED2729532ACC2718004D18DC /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +55,10 @@
 		ED2729412ACC20B9004D18DC /* MobileProjectDemo */ = {
 			isa = PBXGroup;
 			children = (
-				ED2729422ACC20B9004D18DC /* MobileProjectDemoApp.swift */,
-				ED2729442ACC20B9004D18DC /* ContentView.swift */,
+				ED2729422ACC20B9004D18DC /* AppEntry.swift */,
+				ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */,
+				ED2729502ACC21FD004D18DC /* LoginView.swift */,
+				ED2729522ACC2513004D18DC /* Networking */,
 				ED2729462ACC20BA004D18DC /* Assets.xcassets */,
 				ED2729482ACC20BA004D18DC /* Preview Content */,
 			);
@@ -65,6 +71,14 @@
 				ED2729492ACC20BA004D18DC /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		ED2729522ACC2513004D18DC /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				ED2729532ACC2718004D18DC /* Auth.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +151,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED2729452ACC20B9004D18DC /* ContentView.swift in Sources */,
-				ED2729432ACC20B9004D18DC /* MobileProjectDemoApp.swift in Sources */,
+				ED2729512ACC21FD004D18DC /* LoginView.swift in Sources */,
+				ED2729432ACC20B9004D18DC /* AppEntry.swift in Sources */,
+				ED0BB6342ACC4EDE00288CF4 /* MainPageView.swift in Sources */,
+				ED2729542ACC2718004D18DC /* Auth.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,8 +294,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -287,9 +304,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "ngardelis-icloud.com.MobileProjectDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -307,8 +327,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,9 +337,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "ngardelis-icloud.com.MobileProjectDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
