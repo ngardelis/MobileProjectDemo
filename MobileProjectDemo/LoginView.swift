@@ -102,18 +102,26 @@ struct CustomTextField: View {
                             .font(.title3)
                 }
             }
-            if isPasswordField && showPassword {
-                TextField("", text: $value).font(.title3).frame(height: 20)
-            } else if isPasswordField {
-                SecureField("", text: $value).font(.title3).frame(height: 20)
-            } else {
-                TextField("", text: $value).font(.title3).frame(height: 20)
-            }
+            inputField
+                .font(.title3)
+                .foregroundColor(.white)
+                .frame(height: 20)
             Divider()
              .frame(height: 2)
              .background(Color("50a235_green"))
              .offset(y: -2)
         }.frame(width: 300)
+    }
+    
+    @ViewBuilder
+    private var inputField: some View {
+        if isPasswordField && showPassword {
+            TextField("", text: $value)
+        } else if isPasswordField {
+            SecureField("", text: $value)
+        } else {
+            TextField("", text: $value)
+        }
     }
 }
 
