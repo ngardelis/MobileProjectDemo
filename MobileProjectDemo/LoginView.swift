@@ -11,12 +11,17 @@ enum LanguageMode {
     case greek, english
 }
 
+enum TextFieldMode {
+    case userID, password, unowned
+}
+
 struct LoginView: View {
     @ObservedObject var auth = Auth()
     @State var username: String = ""
     @State var password: String = ""
     @State var currentLanguage: LanguageMode = .greek
-    @State var showInfo: Bool = false
+    @State var textFieldMode: TextFieldMode = .unowned
+    @State var showInfo: Bool = true
     
     var body: some View {
         ZStack {
@@ -32,12 +37,16 @@ struct LoginView: View {
             .background( Image("bg_gradient") )
             .ignoresSafeArea(.keyboard)
             if showInfo {
-                ShowInfoView(showInfo: $showInfo)
+                ShowInfoView(
+                    showInfo: $showInfo,
+                    currentLanguage: $currentLanguage,
+                    textFieldMode: $textFieldMode
+                )
             }
         }
     }
     
-    var title: some View {
+    private var title: some View {
         Rectangle()
             .frame(height: 120)
             .foregroundColor(.black)
@@ -51,23 +60,25 @@ struct LoginView: View {
             .ignoresSafeArea()
     }
     
-    var userIDAndPasswordTextFields: some View {
+    private var userIDAndPasswordTextFields: some View {
         VStack(spacing: 40) {
             CustomTextField(placeHolder: "UserID",
                             value: $username,
                             currentLanguage: $currentLanguage,
-                            showInfo: $showInfo
+                            showInfo: $showInfo, 
+                            textFieldMode: $textFieldMode
             )
             CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
                             value: $password,
                             isPasswordField: true,
                             currentLanguage: $currentLanguage,
-                            showInfo: $showInfo
+                            showInfo: $showInfo,
+                            textFieldMode: $textFieldMode
             )
         }
     }
     
-    var signInButton: some View {
+    private var signInButton: some View {
         Button { login() }
         label: {
             ZStack {
@@ -94,6 +105,7 @@ struct CustomTextField: View {
     @State var showPassword: Bool = false
     @Binding var currentLanguage: LanguageMode
     @Binding var showInfo: Bool
+    @Binding var textFieldMode: TextFieldMode
     
     var body: some View {
         VStack {
@@ -122,8 +134,13 @@ struct CustomTextField: View {
         }.frame(width: 300)
     }
     
-    var infoButton: some View {
+    private var infoButton: some View {
         Button {
+            if isPasswordField {
+                textFieldMode = .password
+            } else {
+                textFieldMode = .userID
+            }
             showInfo.toggle()
         } label: {
             Image("ic_info").padding(.horizontal, 5)
@@ -144,20 +161,68 @@ struct CustomTextField: View {
 
 struct ShowInfoView: View {
     @Binding var showInfo: Bool
+    @Binding var currentLanguage: LanguageMode
+    @Binding var textFieldMode: TextFieldMode
     
     var body: some View {
-        ZStack(alignment: .center)  {
-            RoundedRectangle(cornerRadius: 10)
-            VStack {
-                Text("Test").foregroundColor(.white)
-            }
+        ZStack(alignment: .center) {
+            backgroundShape
+            contentDisplay
         }
         .opacity(0.8)
         .background( Image("bg_gradient").opacity(0.1) )
         .ignoresSafeArea()
         .onTapGesture { showInfo.toggle() }
     }
+    
+    private var backgroundShape: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .fill(.black.opacity(0.7))
+    }
+    
+    private var contentDisplay: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 15)
+                .frame(width: 310, height: 80)
+            if textFieldMode == .userID {
+                userIDText
+            } else if textFieldMode == .password {
+                passwordText
+            }
+        }
+    }
+    
+    private var userIDText: some View {
+        VStack {
+            if currentLanguage == .greek {
+                Text("Πρέπει να ξεκινά")
+                Text("με δύο κεφαλαία γράμματα")
+                Text("και στη συνέχεια 4 αριθμούς.")
+            } else {
+                Text("Must start with two capital letters")
+                Text("and afterwards 4 numbers.")
+            }
+        }
+        .foregroundColor(.white)
+        .font(.subheadline)
+    }
+    
+    private var passwordText: some View {
+        VStack {
+            if currentLanguage == .greek {
+                Text("τουλάχιστον 8 χαρακτήρες (2 κεφαλαία, ")
+                Text("3 πεζά, 1 ειδικός χαρακτήρας, 2 νούμερα)")
+            } else {
+                Text("at least 8 characters")
+                Text("(2 uppercase, 3 lowercase,")
+                Text("1 special character, 2 numbers)")
+            }
+        }
+        .foregroundColor(.white)
+        .font(.subheadline)
+    }
 }
+
 
 struct ChangeLanguageView: View {
     @Binding var currentLanguage: LanguageMode
@@ -207,7 +272,7 @@ struct ChangeLanguageView: View {
         }
     }
     
-    var arrowButton: some View {
+    private var arrowButton: some View {
         Button { withAnimation { withAnimation { showLanguageOptions.toggle() } } }
         label: { Image("arrow_down") }
     }
