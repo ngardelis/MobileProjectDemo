@@ -58,7 +58,8 @@ struct LoginView: View {
                     ShowInfoView(
                         showInfo: $showInfo,
                         currentLanguage: $currentLanguage,
-                        textFieldMode: $textFieldMode
+                        textFieldMode: $textFieldMode,
+                        size: geometry.size
                     )
                 }
             }
@@ -105,7 +106,7 @@ struct LoginView: View {
     
     private func loginAlert() -> Alert {
         let titleText = currentLanguage == .greek ? "Λανθασμένα στοιχεία" : "Wrong credentials"
-        let messageText = currentLanguage == .greek ? "Έχετε υποβάλει λάθος στοιχεία." : "You have submitted incorrect details."
+        let messageText = currentLanguage == .greek ? "Έχετε υποβάλει λάθος στοιχεία" : "You have submitted incorrect details"
         let buttonText = currentLanguage == .greek ? "Επιστροφή" : "Dismiss"
         
         return Alert(title: Text(titleText),
@@ -133,24 +134,26 @@ struct UserIDAndPasswordTextFieldsView: View {
 
     var body: some View {
         VStack(spacing: 40) {
-            CustomTextField(placeHolder: "UserID",
-                            value: $username,
-                            currentLanguage: $currentLanguage,
-                            showInfo: $showInfo,
-                            textFieldMode: $textFieldMode,
-                            isValidUserID: $isValidUserID,
-                            isValidPassword: $isValidPassword,
-                            size: size
+            CustomTextField(
+                placeHolder: "UserID",
+                value: $username,
+                currentLanguage: $currentLanguage,
+                showInfo: $showInfo,
+                textFieldMode: $textFieldMode,
+                isValidUserID: $isValidUserID,
+                isValidPassword: $isValidPassword,
+                size: size
             )
-            CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
-                            value: $password,
-                            isPasswordField: true,
-                            currentLanguage: $currentLanguage,
-                            showInfo: $showInfo,
-                            textFieldMode: $textFieldMode,
-                            isValidUserID: $isValidUserID,
-                            isValidPassword: $isValidPassword,
-                            size: size
+            CustomTextField(
+                placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
+                value: $password,
+                isPasswordField: true,
+                currentLanguage: $currentLanguage,
+                showInfo: $showInfo,
+                textFieldMode: $textFieldMode,
+                isValidUserID: $isValidUserID,
+                isValidPassword: $isValidPassword,
+                size: size
             )
         }
     }
@@ -276,9 +279,12 @@ struct ShowInfoView: View {
     @Binding var currentLanguage: LanguageMode
     @Binding var textFieldMode: TextFieldMode
     
+    var size: CGSize
+    
     var body: some View {
         ZStack(alignment: .center) {
-            backgroundShape
+            //backgroundShape
+            Rectangle().fill(Color("onyx")).opacity(1)
             contentDisplay
         }
         .opacity(0.8)
@@ -295,7 +301,7 @@ struct ShowInfoView: View {
     private var contentDisplay: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
-                .frame(width: 310, height: 80)
+                .frame(width: size.width * 0.85, height: 100)
             if textFieldMode == .userID {
                 userIDText
             } else if textFieldMode == .password {
@@ -309,21 +315,22 @@ struct ShowInfoView: View {
             if currentLanguage == .greek {
                 Text("Πρέπει να ξεκινά")
                 Text("με δύο κεφαλαία γράμματα")
-                Text("και στη συνέχεια 4 αριθμούς.")
+                Text("και στη συνέχεια 4 αριθμούς")
             } else {
                 Text("Must start with two capital letters")
-                Text("and afterwards 4 numbers.")
+                Text("and afterwards 4 numbers")
             }
         }
         .foregroundColor(.white)
-        .font(.subheadline)
+        .font(.system(size: min(size.width / 10, 18)))
     }
     
     private var passwordText: some View {
         VStack {
             if currentLanguage == .greek {
-                Text("τουλάχιστον 8 χαρακτήρες (2 κεφαλαία, ")
-                Text("3 πεζά, 1 ειδικός χαρακτήρας, 2 νούμερα)")
+                Text("τουλάχιστον 8 χαρακτήρες")
+                Text("(2 κεφαλαία, 3 πεζά,")
+                Text("1 ειδικός χαρακτήρας, 2 νούμερα)")
             } else {
                 Text("at least 8 characters")
                 Text("(2 uppercase, 3 lowercase,")
@@ -331,7 +338,7 @@ struct ShowInfoView: View {
             }
         }
         .foregroundColor(.white)
-        .font(.subheadline)
+        .font(.system(size: min(size.width / 10, 18)))
     }
 }
 
@@ -351,7 +358,7 @@ struct ChangeLanguageView: View {
                         languageOptions.animation(.smooth(duration: 0.1), value: showLanguageOptions),
                         alignment: .topLeading
                     )
-            }.padding(.horizontal, 35).offset(y: -5)
+            }.padding(.horizontal, 30).offset(y: -5)
         }
     }
     
