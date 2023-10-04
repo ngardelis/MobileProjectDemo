@@ -20,6 +20,9 @@ struct LoginView: View {
                 CustomTextField(placeHolder: "Κωδικός", value: $password, isPasswordField: true)
             }
             Spacer()
+            ChangeLanguageView()
+            Spacer()
+            Spacer()
             signInButton
         }
     }
@@ -77,6 +80,64 @@ struct CustomTextField: View {
         }.frame(width: 300)
     }
 }
+
+struct ChangeLanguageView: View {
+    @State var showLanguageOptions: Bool = true
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            VStack {
+                HStack {
+                    FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
+                    Spacer()
+                    arrowButton
+                }
+                .padding(.horizontal)
+                .frame(width: 200, height: 70)
+                .background(Capsule().foregroundColor(Color("onyx")))
+                .overlay(
+                    VStack {
+                        if showLanguageOptions {
+                            Spacer(minLength: 70)
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 30)
+                                    .frame(width: 200, height: 140)
+                                    .foregroundColor(Color("onyx"))
+                                VStack {
+                                    FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
+                                        .onTapGesture { print("english") }
+                                    FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
+                                        .onTapGesture { print("greek") }
+                                }.padding(.leading)
+                            }.offset(y: 5)
+                        }
+                    }.animation(.smooth(duration: 0.1)), alignment: .topLeading
+                )
+            }.padding(.horizontal, 35)
+        }
+    }
+    
+    var arrowButton: some View {
+        Button { withAnimation { withAnimation { showLanguageOptions.toggle() } } }
+        label: { Image("arrow_down") }
+    }
+}
+
+struct FlagAndLanguage: View {
+    var flagImage: String
+    var languageText: String
+    
+    var body: some View {
+        HStack {
+           Image("\(flagImage)")
+           Text("\(languageText)").foregroundColor(.white).font(.title2).offset(x: 5)
+           Spacer()
+        }
+    }
+}
+
+
 
 
 
