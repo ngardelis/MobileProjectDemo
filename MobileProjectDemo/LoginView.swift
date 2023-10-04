@@ -21,7 +21,7 @@ struct LoginView: View {
     @State var password: String = ""
     @State var currentLanguage: LanguageMode = .greek
     @State var textFieldMode: TextFieldMode = .unowned
-    @State var showInfo: Bool = true
+    @State var showInfo: Bool = false
     
     var body: some View {
         ZStack {
@@ -114,13 +114,7 @@ struct CustomTextField: View {
                 infoButton
                 Spacer()
                 if isPasswordField {
-                    Button {
-                        showPassword.toggle()
-                    } label: { 
-                        Text(currentLanguage == .greek ? "Προβολή" : "Show")
-                            .fontWeight(.semibold) }
-                            .foregroundColor(Color("forest_green"))
-                            .font(.title3)
+                    showPasswordButton
                 }
             }
             inputField
@@ -156,6 +150,17 @@ struct CustomTextField: View {
         } else {
             TextField("", text: $value)
         }
+    }
+    
+    private var showPasswordButton: some View {
+        Button {
+            showPassword.toggle()
+        } label: {
+            Text(currentLanguage == .greek ? "Προβολή" : "Show")
+                .fontWeight(.semibold)
+        }
+        .foregroundColor(Color("forest_green"))
+        .font(.title3)
     }
 }
 
@@ -223,7 +228,6 @@ struct ShowInfoView: View {
     }
 }
 
-
 struct ChangeLanguageView: View {
     @Binding var currentLanguage: LanguageMode
     @State var showLanguageOptions: Bool = false
@@ -232,48 +236,58 @@ struct ChangeLanguageView: View {
         HStack {
             Spacer()
             VStack {
-                HStack {
-                    if currentLanguage == .greek {
-                        FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
-                    } else if currentLanguage == .english {
-                        FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
-                    }
-                    Spacer()
-                    arrowButton
-                }
+                currentFlagAndLanguage
                 .padding(.horizontal)
                 .frame(width: 200, height: 70)
                 .background(Capsule().foregroundColor(Color("onyx")))
                 .overlay(
-                    VStack {
-                        if showLanguageOptions {
-                            Spacer(minLength: 70)
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 30)
-                                    .frame(width: 200, height: 140)
-                                    .foregroundColor(Color("onyx"))
-                                VStack {
-                                    FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
-                                        .onTapGesture { 
-                                            currentLanguage = .english
-                                            showLanguageOptions.toggle()
-                                        }
-                                    FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
-                                        .onTapGesture { 
-                                            currentLanguage = .greek
-                                            showLanguageOptions.toggle()
-                                        }
-                                }.padding(.leading)
-                            }.offset(y: 5)
-                        }
-                    }.animation(.smooth(duration: 0.1)), alignment: .topLeading
+                    languageOptions.animation(.smooth(duration: 0.1)),
+                    alignment: .topLeading
                 )
             }.padding(.horizontal, 35)
         }
     }
     
+    private var currentFlagAndLanguage: some View {
+        HStack {
+            switch currentLanguage {
+            case .greek:
+                FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
+            case .english:
+                FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
+            }
+            Spacer()
+            arrowButton
+        }
+    }
+    
+    private var languageOptions: some View {
+        VStack {
+            if showLanguageOptions {
+                Spacer(minLength: 70)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .frame(width: 200, height: 140)
+                        .foregroundColor(Color("onyx"))
+                    VStack {
+                        FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
+                            .onTapGesture {
+                                currentLanguage = .english
+                                showLanguageOptions.toggle()
+                            }
+                        FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
+                            .onTapGesture {
+                                currentLanguage = .greek
+                                showLanguageOptions.toggle()
+                            }
+                    }.padding(.leading)
+                }.offset(y: 5)
+            }
+        }
+    }
+    
     private var arrowButton: some View {
-        Button { withAnimation { withAnimation { showLanguageOptions.toggle() } } }
+        Button { withAnimation { showLanguageOptions.toggle() } }
         label: { Image("arrow_down") }
     }
 }
