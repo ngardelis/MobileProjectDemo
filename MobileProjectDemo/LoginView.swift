@@ -34,7 +34,7 @@ struct LoginView: View {
         GeometryReader { geometry in
             ZStack {
                 VStack {
-                    title
+                    TitleView(currentLanguage == .greek ? "Σύνδεση" : "Sign In")
                     UserIDAndPasswordTextFieldsView(
                         username: $username,
                         password: $password,
@@ -64,20 +64,6 @@ struct LoginView: View {
                 }
             }
         }
-    }
-    
-    private var title: some View {
-        Rectangle()
-            .frame(height: 120)
-            .foregroundColor(.black)
-            .overlay(
-                Text(currentLanguage == . greek ? "Σύνδεση" : "Sign In")
-                    .font(.largeTitle)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .offset(y: 10)
-            )
-            .ignoresSafeArea()
     }
     
     // Don't allow the user to sign in if text fields are empty
@@ -283,12 +269,10 @@ struct ShowInfoView: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            //backgroundShape
-            Rectangle().fill(Color("onyx")).opacity(1)
+            Rectangle().fill(Color("onyx"))
             contentDisplay
         }
-        .opacity(0.8)
-        .background( Image("bg_gradient").opacity(0.1) )
+        .opacity(0.9)
         .ignoresSafeArea()
         .onTapGesture { showInfo.toggle() }
     }

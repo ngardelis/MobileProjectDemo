@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		ED0BB6342ACC4EDE00288CF4 /* MainPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */; };
+		ED0BB6532ACDCC2100288CF4 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6522ACDCC2100288CF4 /* TitleView.swift */; };
 		ED2729432ACC20B9004D18DC /* AppEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2729422ACC20B9004D18DC /* AppEntry.swift */; };
 		ED2729472ACC20BA004D18DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2729462ACC20BA004D18DC /* Assets.xcassets */; };
 		ED27294A2ACC20BA004D18DC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2729492ACC20BA004D18DC /* Preview Assets.xcassets */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageView.swift; sourceTree = "<group>"; };
+		ED0BB6522ACDCC2100288CF4 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		ED27293F2ACC20B9004D18DC /* MobileProjectDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileProjectDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2729422ACC20B9004D18DC /* AppEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEntry.swift; sourceTree = "<group>"; };
 		ED2729462ACC20BA004D18DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -36,6 +38,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ED0BB6512ACDCC0400288CF4 /* SharedViews */ = {
+			isa = PBXGroup;
+			children = (
+				ED0BB6522ACDCC2100288CF4 /* TitleView.swift */,
+			);
+			path = SharedViews;
+			sourceTree = "<group>";
+		};
 		ED2729362ACC20B9004D18DC = {
 			isa = PBXGroup;
 			children = (
@@ -59,6 +69,7 @@
 				ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */,
 				ED2729502ACC21FD004D18DC /* LoginView.swift */,
 				ED2729522ACC2513004D18DC /* Networking */,
+				ED0BB6512ACDCC0400288CF4 /* SharedViews */,
 				ED2729462ACC20BA004D18DC /* Assets.xcassets */,
 				ED2729482ACC20BA004D18DC /* Preview Content */,
 			);
@@ -155,6 +166,7 @@
 				ED2729432ACC20B9004D18DC /* AppEntry.swift in Sources */,
 				ED0BB6342ACC4EDE00288CF4 /* MainPageView.swift in Sources */,
 				ED2729542ACC2718004D18DC /* Auth.swift in Sources */,
+				ED0BB6532ACDCC2100288CF4 /* TitleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

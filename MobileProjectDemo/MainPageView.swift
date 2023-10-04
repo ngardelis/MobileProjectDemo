@@ -9,7 +9,10 @@ import SwiftUI
 
 struct MainPageView: View {
     var body: some View {
-        Text("Main Page")
+        VStack {
+            TitleView("Περιοδικά")
+            Spacer()
+        }
     }
 }
 
