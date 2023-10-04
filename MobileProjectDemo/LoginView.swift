@@ -7,20 +7,32 @@
 
 import SwiftUI
 
+enum LanguageMode {
+    case greek, english
+}
+
 struct LoginView: View {
     @ObservedObject var auth = Auth()
     @State var username: String = ""
     @State var password: String = ""
+    @State var currentLanguage: LanguageMode = .greek
     
     var body: some View {
         VStack {
             Spacer()
             VStack(spacing: 40) {
-                CustomTextField(placeHolder: "UserID", value: $username)
-                CustomTextField(placeHolder: "Κωδικός", value: $password, isPasswordField: true)
+                CustomTextField(placeHolder: "UserID",
+                                value: $username,
+                                currentLanguage: $currentLanguage
+                )
+                CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
+                                value: $password,
+                                isPasswordField: true,
+                                currentLanguage: $currentLanguage
+                )
             }
             Spacer()
-            ChangeLanguageView()
+            ChangeLanguageView(currentLanguage: $currentLanguage)
             Spacer()
             Spacer()
             signInButton
@@ -32,7 +44,7 @@ struct LoginView: View {
         label: {
             ZStack {
                 Image("btn_rounded")
-                Text("Σύνδεση")
+                Text(currentLanguage == .greek ? "Σύνδεση" : "Sign In")
                     .font(.title)
                     .foregroundColor(Color("dollar_bill"))
             }
@@ -52,6 +64,7 @@ struct CustomTextField: View {
     @Binding var value: String
     var isPasswordField: Bool = false
     @State var showPassword: Bool = false
+    @Binding var currentLanguage: LanguageMode
     
     var body: some View {
         VStack {
@@ -62,8 +75,11 @@ struct CustomTextField: View {
                 if isPasswordField {
                     Button {
                         showPassword.toggle()
-                    } label: { Text("Προβολή").fontWeight(.semibold) }
-                    .foregroundColor(Color("forest_green")).font(.title3)
+                    } label: { 
+                        Text(currentLanguage == .greek ? "Προβολή" : "Show")
+                            .fontWeight(.semibold) }
+                            .foregroundColor(Color("forest_green"))
+                            .font(.title3)
                 }
             }
             if isPasswordField && showPassword {
@@ -82,14 +98,19 @@ struct CustomTextField: View {
 }
 
 struct ChangeLanguageView: View {
-    @State var showLanguageOptions: Bool = true
+    @Binding var currentLanguage: LanguageMode
+    @State var showLanguageOptions: Bool = false
     
     var body: some View {
         HStack {
             Spacer()
             VStack {
                 HStack {
-                    FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
+                    if currentLanguage == .greek {
+                        FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
+                    } else if currentLanguage == .english {
+                        FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
+                    }
                     Spacer()
                     arrowButton
                 }
@@ -106,9 +127,15 @@ struct ChangeLanguageView: View {
                                     .foregroundColor(Color("onyx"))
                                 VStack {
                                     FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
-                                        .onTapGesture { print("english") }
+                                        .onTapGesture { 
+                                            currentLanguage = .english
+                                            showLanguageOptions.toggle()
+                                        }
                                     FlagAndLanguage(flagImage: "greece_flag_icon", languageText: "Greek")
-                                        .onTapGesture { print("greek") }
+                                        .onTapGesture { 
+                                            currentLanguage = .greek
+                                            showLanguageOptions.toggle()
+                                        }
                                 }.padding(.leading)
                             }.offset(y: 5)
                         }
