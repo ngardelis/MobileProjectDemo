@@ -17,13 +17,18 @@ enum TextFieldMode {
 
 struct LoginView: View {
     @ObservedObject var auth = Auth()
+    
+    // User input states
     @State var username: String = ""
     @State var password: String = ""
+    
     @State var currentLanguage: LanguageMode = .greek
     @State var textFieldMode: TextFieldMode = .unowned
+    
     @State var showInfo: Bool = false
     @State var isValidUserID: Bool = true
     @State var isValidPassword: Bool = true
+    @State private var showLoginAlert: Bool = false
     
     var body: some View {
         ZStack {
@@ -38,6 +43,7 @@ struct LoginView: View {
             }
             .background( Image("bg_gradient") )
             .ignoresSafeArea(.keyboard)
+            .alert(isPresented: $showLoginAlert, content: loginAlert)
             if showInfo {
                 ShowInfoView(
                     showInfo: $showInfo,
@@ -84,8 +90,19 @@ struct LoginView: View {
         }
     }
     
+    // Don't allow the user to sign in if text fields are empty
+    private var canSignIn: Bool {
+        !username.isEmpty && !password.isEmpty
+    }
+    
     private var signInButton: some View {
-        Button { login() }
+        Button { 
+            if !isValidUserID || !isValidPassword {
+                showLoginAlert = true
+            } else {
+                login()
+            }
+        }
         label: {
             ZStack {
                 Image("btn_rounded")
@@ -94,12 +111,23 @@ struct LoginView: View {
                     .foregroundColor(Color("dollar_bill"))
             }
         }
+        .disabled(!canSignIn)
+    }
+    
+    private func loginAlert() -> Alert {
+        let titleText = currentLanguage == .greek ? "Λανθασμένα στοιχεία" : "Wrong credentials"
+        let messageText = currentLanguage == .greek ? "Έχετε υποβάλει λάθος στοιχεία." : "You have submitted incorrect details."
+        let buttonText = currentLanguage == .greek ? "Επιστροφή" : "Dismiss"
+        
+        return Alert(title: Text(titleText),
+                     message: Text(messageText),
+                     dismissButton: .default(Text(buttonText)))
     }
     
     func login() {
         Task {
-            guard (try? await auth.login(username: username, password: password)) != nil 
-            else { fatalError("Wrong Credentials") }
+            do { try await auth.login(username: username, password: password) }
+            catch { print("Login Error") }
         }
     }
 }
