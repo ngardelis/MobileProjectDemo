@@ -20,22 +20,27 @@ struct LoginView: View {
     var body: some View {
         VStack {
             Spacer()
-            VStack(spacing: 40) {
-                CustomTextField(placeHolder: "UserID",
-                                value: $username,
-                                currentLanguage: $currentLanguage
-                )
-                CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
-                                value: $password,
-                                isPasswordField: true,
-                                currentLanguage: $currentLanguage
-                )
-            }
+            UserIDAndPasswordTextFields
             Spacer()
             ChangeLanguageView(currentLanguage: $currentLanguage)
             Spacer()
             Spacer()
             signInButton
+        }
+        .background( Image("bg_gradient") )
+    }
+    
+    var UserIDAndPasswordTextFields: some View {
+        VStack(spacing: 40) {
+            CustomTextField(placeHolder: "UserID",
+                            value: $username,
+                            currentLanguage: $currentLanguage
+            )
+            CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
+                            value: $password,
+                            isPasswordField: true,
+                            currentLanguage: $currentLanguage
+            )
         }
     }
     
@@ -69,7 +74,7 @@ struct CustomTextField: View {
     var body: some View {
         VStack {
             HStack {
-                Text("\(placeHolder)").font(.title)
+                Text("\(placeHolder)").font(.title).foregroundColor(.white)
                 Image("ic_info").padding(.horizontal, 5)
                 Spacer()
                 if isPasswordField {
