@@ -19,8 +19,8 @@ struct LoginView: View {
     
     var body: some View {
         VStack {
-            Spacer()
-            UserIDAndPasswordTextFields
+            title
+            userIDAndPasswordTextFields
             Spacer()
             ChangeLanguageView(currentLanguage: $currentLanguage)
             Spacer()
@@ -28,9 +28,24 @@ struct LoginView: View {
             signInButton
         }
         .background( Image("bg_gradient") )
+        .ignoresSafeArea(.keyboard)
     }
     
-    var UserIDAndPasswordTextFields: some View {
+    var title: some View {
+        Rectangle()
+            .frame(height: 120)
+            .foregroundColor(.black)
+            .overlay(
+                Text(currentLanguage == . greek ? "Σύνδεση" : "Sign In")
+                    .font(.largeTitle)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .offset(y: 10)
+            )
+            .ignoresSafeArea()
+    }
+    
+    var userIDAndPasswordTextFields: some View {
         VStack(spacing: 40) {
             CustomTextField(placeHolder: "UserID",
                             value: $username,
