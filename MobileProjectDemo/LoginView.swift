@@ -16,19 +16,25 @@ struct LoginView: View {
     @State var username: String = ""
     @State var password: String = ""
     @State var currentLanguage: LanguageMode = .greek
+    @State var showInfo: Bool = false
     
     var body: some View {
-        VStack {
-            title
-            userIDAndPasswordTextFields
-            Spacer()
-            ChangeLanguageView(currentLanguage: $currentLanguage)
-            Spacer()
-            Spacer()
-            signInButton
+        ZStack {
+            VStack {
+                title
+                userIDAndPasswordTextFields
+                Spacer()
+                ChangeLanguageView(currentLanguage: $currentLanguage)
+                Spacer()
+                Spacer()
+                signInButton
+            }
+            .background( Image("bg_gradient") )
+            .ignoresSafeArea(.keyboard)
+            if showInfo {
+                ShowInfoView()
+            }
         }
-        .background( Image("bg_gradient") )
-        .ignoresSafeArea(.keyboard)
     }
     
     var title: some View {
@@ -49,12 +55,14 @@ struct LoginView: View {
         VStack(spacing: 40) {
             CustomTextField(placeHolder: "UserID",
                             value: $username,
-                            currentLanguage: $currentLanguage
+                            currentLanguage: $currentLanguage,
+                            showInfo: $showInfo
             )
             CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
                             value: $password,
                             isPasswordField: true,
-                            currentLanguage: $currentLanguage
+                            currentLanguage: $currentLanguage,
+                            showInfo: $showInfo
             )
         }
     }
@@ -85,12 +93,13 @@ struct CustomTextField: View {
     var isPasswordField: Bool = false
     @State var showPassword: Bool = false
     @Binding var currentLanguage: LanguageMode
+    @Binding var showInfo: Bool
     
     var body: some View {
         VStack {
             HStack {
                 Text("\(placeHolder)").font(.title).foregroundColor(.white)
-                Image("ic_info").padding(.horizontal, 5)
+                infoButton
                 Spacer()
                 if isPasswordField {
                     Button {
@@ -113,6 +122,14 @@ struct CustomTextField: View {
         }.frame(width: 300)
     }
     
+    var infoButton: some View {
+        Button {
+            showInfo.toggle()
+        } label: {
+            Image("ic_info").padding(.horizontal, 5)
+        }
+    }
+    
     @ViewBuilder
     private var inputField: some View {
         if isPasswordField && showPassword {
@@ -122,6 +139,12 @@ struct CustomTextField: View {
         } else {
             TextField("", text: $value)
         }
+    }
+}
+
+struct ShowInfoView: View {
+    var body: some View {
+        Text("test")
     }
 }
 
