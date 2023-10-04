@@ -22,6 +22,8 @@ struct LoginView: View {
     @State var currentLanguage: LanguageMode = .greek
     @State var textFieldMode: TextFieldMode = .unowned
     @State var showInfo: Bool = false
+    @State var isValidUserID: Bool = true
+    @State var isValidPassword: Bool = true
     
     var body: some View {
         ZStack {
@@ -66,14 +68,18 @@ struct LoginView: View {
                             value: $username,
                             currentLanguage: $currentLanguage,
                             showInfo: $showInfo, 
-                            textFieldMode: $textFieldMode
+                            textFieldMode: $textFieldMode,
+                            isValidUserID: $isValidUserID,
+                            isValidPassword: $isValidPassword
             )
             CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
                             value: $password,
                             isPasswordField: true,
                             currentLanguage: $currentLanguage,
                             showInfo: $showInfo,
-                            textFieldMode: $textFieldMode
+                            textFieldMode: $textFieldMode,
+                            isValidUserID: $isValidUserID,
+                            isValidPassword: $isValidPassword
             )
         }
     }
@@ -106,26 +112,45 @@ struct CustomTextField: View {
     @Binding var currentLanguage: LanguageMode
     @Binding var showInfo: Bool
     @Binding var textFieldMode: TextFieldMode
+    @Binding var isValidUserID: Bool
+    @Binding var isValidPassword: Bool
+    
+    // Declared as static so they aren't recreated every time the body renders
+    private static let userIDRegex = "^[A-Z]{2}\\d{4}$"
+    private static let passwordRegex = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*\\d.*\\d)(?=.*[a-z].*[a-z].*[a-z]).{8}$"
     
     var body: some View {
         VStack {
-            HStack {
-                Text("\(placeHolder)").font(.title).foregroundColor(.white)
-                infoButton
-                Spacer()
-                if isPasswordField {
-                    showPasswordButton
-                }
+            header
+            ZStack(alignment: .trailing) {
+                inputField
+                    .font(.title3)
+                    .foregroundColor(.white)
+                    .frame(height: 20)
+                errorIcon
             }
-            inputField
-                .font(.title3)
-                .foregroundColor(.white)
-                .frame(height: 20)
-            Divider()
-             .frame(height: 2)
-             .background(Color("50a235_green"))
-             .offset(y: -2)
-        }.frame(width: 300)
+            dividerBasedOnValidation
+        }
+        .frame(width: 300)
+    }
+    
+    private var header: some View {
+        HStack {
+            Text("\(placeHolder)").font(.title).foregroundColor(.white)
+            infoButton
+            Spacer()
+            if isPasswordField {
+                showPasswordButton
+            }
+        }
+    }
+    
+    private var errorIcon: some View {
+        Group {
+            if (isPasswordField && !isValidPassword) || (!isPasswordField && !isValidUserID) {
+                Image("ic_error")
+            }
+        }
     }
     
     private var infoButton: some View {
@@ -143,13 +168,41 @@ struct CustomTextField: View {
     
     @ViewBuilder
     private var inputField: some View {
-        if isPasswordField && showPassword {
-            TextField("", text: $value)
-        } else if isPasswordField {
-            SecureField("", text: $value)
+        if isPasswordField {
+            if showPassword {
+                TextField("", text: $value)
+                    .onChange(of: value, perform: validatePassword)
+            } else {
+                SecureField("", text: $value)
+                    .onChange(of: value, perform: validatePassword)
+            }
         } else {
             TextField("", text: $value)
+                .onChange(of: value, perform: validateUserID)
         }
+    }
+    
+    private var dividerBasedOnValidation: some View {
+        Divider()
+            .frame(height: 2)
+            .background(dividerColor)
+            .offset(y: -2)
+    }
+    
+    private var dividerColor: Color {
+        if isPasswordField {
+            return isValidPassword ? Color("50a235_green") : .red
+        } else {
+            return isValidUserID ? Color("50a235_green") : .red
+        }
+    }
+    
+    private func validatePassword(_ password: String) {
+        isValidPassword = password.isEmpty ? true : NSPredicate(format: "SELF MATCHES %@", CustomTextField.passwordRegex).evaluate(with: password)
+    }
+
+    private func validateUserID(_ userID: String) {
+        isValidUserID = userID.isEmpty ? true : NSPredicate(format: "SELF MATCHES %@", CustomTextField.userIDRegex).evaluate(with: userID)
     }
     
     private var showPasswordButton: some View {
