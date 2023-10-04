@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+enum AuthError: Error {
+    case invalidURL
+    case unexpectedStatusCode
+    case decodingError
+}
+
 final class Auth: ObservableObject {
     
     // Keep track if the user is logged in or not
@@ -15,7 +21,7 @@ final class Auth: ObservableObject {
     func login(username: String, password: String) async throws {
         let path = "https://3nt-demo-backend.azurewebsites.net/Access/Login"
         
-        guard let url = URL(string: path) else { fatalError("Failed to convert URL") }
+        guard let url = URL(string: path) else { throw AuthError.invalidURL }
         
         var loginRequest = URLRequest(url: url)
         
@@ -33,10 +39,12 @@ final class Auth: ObservableObject {
         let (data, response) = try await URLSession.shared.data(for: loginRequest)
         
         // Ensure we get a 200 OK response
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else { fatalError("Received non-200 status code") }
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw AuthError.unexpectedStatusCode
+        }
         
         // Decode the JSON response using the LoginResponse model
-        guard (try? JSONDecoder().decode(LoginResponse.self, from: data)) != nil else { fatalError("Failed to decode response") }
+        guard (try? JSONDecoder().decode(LoginResponse.self, from: data)) != nil else { throw AuthError.decodingError }
         
         DispatchQueue.main.async {
             self.isLoggedIn = true
