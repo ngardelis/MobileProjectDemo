@@ -32,7 +32,7 @@ struct LoginView: View {
             .background( Image("bg_gradient") )
             .ignoresSafeArea(.keyboard)
             if showInfo {
-                ShowInfoView()
+                ShowInfoView(showInfo: $showInfo)
             }
         }
     }
@@ -143,8 +143,19 @@ struct CustomTextField: View {
 }
 
 struct ShowInfoView: View {
+    @Binding var showInfo: Bool
+    
     var body: some View {
-        Text("test")
+        ZStack(alignment: .center)  {
+            RoundedRectangle(cornerRadius: 10)
+            VStack {
+                Text("Test").foregroundColor(.white)
+            }
+        }
+        .opacity(0.8)
+        .background( Image("bg_gradient").opacity(0.1) )
+        .ignoresSafeArea()
+        .onTapGesture { showInfo.toggle() }
     }
 }
 
