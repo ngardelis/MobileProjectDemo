@@ -31,25 +31,36 @@ struct LoginView: View {
     @State private var showLoginAlert: Bool = false
     
     var body: some View {
-        ZStack {
-            VStack {
-                title
-                userIDAndPasswordTextFields
-                Spacer()
-                ChangeLanguageView(currentLanguage: $currentLanguage)
-                Spacer()
-                Spacer()
-                signInButton
-            }
-            .background( Image("bg_gradient") )
-            .ignoresSafeArea(.keyboard)
-            .alert(isPresented: $showLoginAlert, content: loginAlert)
-            if showInfo {
-                ShowInfoView(
-                    showInfo: $showInfo,
-                    currentLanguage: $currentLanguage,
-                    textFieldMode: $textFieldMode
-                )
+        GeometryReader { geometry in
+            ZStack {
+                VStack {
+                    title
+                    UserIDAndPasswordTextFieldsView(
+                        username: $username,
+                        password: $password,
+                        currentLanguage: $currentLanguage,
+                        showInfo: $showInfo,
+                        textFieldMode: $textFieldMode,
+                        isValidUserID: $isValidUserID,
+                        isValidPassword: $isValidPassword,
+                        size: geometry.size
+                    )
+                    Spacer()
+                    ChangeLanguageView(currentLanguage: $currentLanguage)
+                    Spacer()
+                    Spacer()
+                    signInButton
+                }
+                .background( Image("bg_gradient") )
+                .ignoresSafeArea(.keyboard)
+                .alert(isPresented: $showLoginAlert, content: loginAlert)
+                if showInfo {
+                    ShowInfoView(
+                        showInfo: $showInfo,
+                        currentLanguage: $currentLanguage,
+                        textFieldMode: $textFieldMode
+                    )
+                }
             }
         }
     }
@@ -66,28 +77,6 @@ struct LoginView: View {
                     .offset(y: 10)
             )
             .ignoresSafeArea()
-    }
-    
-    private var userIDAndPasswordTextFields: some View {
-        VStack(spacing: 40) {
-            CustomTextField(placeHolder: "UserID",
-                            value: $username,
-                            currentLanguage: $currentLanguage,
-                            showInfo: $showInfo, 
-                            textFieldMode: $textFieldMode,
-                            isValidUserID: $isValidUserID,
-                            isValidPassword: $isValidPassword
-            )
-            CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
-                            value: $password,
-                            isPasswordField: true,
-                            currentLanguage: $currentLanguage,
-                            showInfo: $showInfo,
-                            textFieldMode: $textFieldMode,
-                            isValidUserID: $isValidUserID,
-                            isValidPassword: $isValidPassword
-            )
-        }
     }
     
     // Don't allow the user to sign in if text fields are empty
@@ -132,6 +121,41 @@ struct LoginView: View {
     }
 }
 
+struct UserIDAndPasswordTextFieldsView: View {
+    @Binding var username: String
+    @Binding var password: String
+    @Binding var currentLanguage: LanguageMode
+    @Binding var showInfo: Bool
+    @Binding var textFieldMode: TextFieldMode
+    @Binding var isValidUserID: Bool
+    @Binding var isValidPassword: Bool
+    var size: CGSize
+
+    var body: some View {
+        VStack(spacing: 40) {
+            CustomTextField(placeHolder: "UserID",
+                            value: $username,
+                            currentLanguage: $currentLanguage,
+                            showInfo: $showInfo,
+                            textFieldMode: $textFieldMode,
+                            isValidUserID: $isValidUserID,
+                            isValidPassword: $isValidPassword,
+                            size: size
+            )
+            CustomTextField(placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
+                            value: $password,
+                            isPasswordField: true,
+                            currentLanguage: $currentLanguage,
+                            showInfo: $showInfo,
+                            textFieldMode: $textFieldMode,
+                            isValidUserID: $isValidUserID,
+                            isValidPassword: $isValidPassword,
+                            size: size
+            )
+        }
+    }
+}
+
 struct CustomTextField: View {
     var placeHolder: String
     @Binding var value: String
@@ -143,23 +167,25 @@ struct CustomTextField: View {
     @Binding var isValidUserID: Bool
     @Binding var isValidPassword: Bool
     
+    var size: CGSize
+    
     // Declared as static so they aren't recreated every time the body renders
     private static let userIDRegex = "^[A-Z]{2}\\d{4}$"
     private static let passwordRegex = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*\\d.*\\d)(?=.*[a-z].*[a-z].*[a-z]).{8}$"
     
     var body: some View {
-        VStack {
-            header
-            ZStack(alignment: .trailing) {
-                inputField
-                    .font(.title3)
-                    .foregroundColor(.white)
-                    .frame(height: 20)
-                errorIcon
+            VStack {
+                header
+                ZStack(alignment: .trailing) {
+                    inputField
+                        .font(.title3)
+                        .foregroundColor(.white)
+                        .frame(height: 20)
+                    errorIcon
+                }
+                dividerBasedOnValidation
             }
-            dividerBasedOnValidation
-        }
-        .frame(width: 300)
+            .frame(width: size.width * 0.8)
     }
     
     private var header: some View {
@@ -318,14 +344,14 @@ struct ChangeLanguageView: View {
             Spacer()
             VStack {
                 currentFlagAndLanguage
-                .padding(.horizontal)
-                .frame(width: 200, height: 70)
-                .background(Capsule().foregroundColor(Color("onyx")))
-                .overlay(
-                    languageOptions.animation(.smooth(duration: 0.1)),
-                    alignment: .topLeading
-                )
-            }.padding(.horizontal, 35)
+                    .padding(.horizontal)
+                    .frame(width: 200, height: 70)
+                    .background(Capsule().foregroundColor(Color("onyx")))
+                    .overlay(
+                        languageOptions.animation(.smooth(duration: 0.1), value: showLanguageOptions),
+                        alignment: .topLeading
+                    )
+            }.padding(.horizontal, 35).offset(y: -5)
         }
     }
     
