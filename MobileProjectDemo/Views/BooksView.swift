@@ -11,32 +11,80 @@ struct BooksView: View {
     @EnvironmentObject var auth: Auth
     @ObservedObject var booksVM: BooksVM
     
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     var body: some View {
         VStack {
             TitleView("Περιοδικά")
             Spacer()
-            List {
+            ScrollView {
                 ForEach(booksVM.groupedBooks.keys.sorted(), id: \.self) { key in
-                    Section(header: Text(key)) {
-                        ForEach(booksVM.groupedBooks[key]!, id: \.title) { book in
-                            HStack {
-                                Text(book.title)
-                                Spacer()
-                                Button("Download") {
-                                    booksVM.downloadBook(book)
-                                }
-                                .padding(.trailing)
-                                Button("Show PDF") {
-                                    booksVM.showPDF(for: book)
+                    Section(header:
+                        HStack {
+                            Text(key).bold()
+                            Spacer()
+                        }.padding(.leading, 20))
+                    {
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(booksVM.groupedBooks[key]!, id: \.title) { book in
+                                VStack {
+                                    ZStack(alignment: .bottom) {
+                                        AsyncImage(url: URL(string: book.secureImageUrl)) { image in
+                                            image.resizable()
+                                        } placeholder: { Color.gray }
+                                        .frame(width: 130, height: 170)
+                                        Text(downloadStateText(for: book))
+                                            .font(.title3)
+                                            .foregroundStyle(downloadStateColor(for: book))
+                                            .padding(3)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 5)
+                                                    .fill(.white)
+                                            )
+                                            .padding(5)
+                                    }
+                                    Text(book.title)
+                                        .foregroundStyle(.white)
+                                        .font(.subheadline)
+                                }.onTapGesture{ booksVM.downloadPDF(for: book) }
+                                    .sheet(isPresented: $booksVM.isSavePresented){
+                                        ActivityViewController(activityItems: [booksVM.pdfData!])
                                 }
                             }
                         }
                     }
                 }
             }
-            .listStyle(GroupedListStyle())
         }
+        .background(Color("dark"))
         .onAppear() { Task { booksVM.fetchBooks } }
+    }
+    
+    func downloadStateText(for book: Book) -> String {
+        let state = booksVM.bookDownloadStates[book.id] ?? .pending
+        switch state {
+        case .pending:
+            return "Pending"
+        case .inProgress:
+            return "Downloading"
+        case .completed:
+            return "Downloaded"
+        }
+    }
+
+    func downloadStateColor(for book: Book) -> Color {
+        let state = booksVM.bookDownloadStates[book.id] ?? .pending
+        switch state {
+        case .pending:
+            return .red
+        case .inProgress:
+            return .orange
+        case .completed:
+            return .green
+        }
     }
 }
 
