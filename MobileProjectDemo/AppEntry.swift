@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct AppEntry: App {
     @StateObject var auth = Auth()
-    
+
     var body: some Scene {
         WindowGroup {
             if auth.isLoggedIn {
-               NavigationView()
+                let bookService = BookService(auth: auth)
+                NavigationView(bookService: bookService)
+                    .environmentObject(auth)
            } else {
                LoginView()
                    .environmentObject(auth)
@@ -22,3 +24,7 @@ struct AppEntry: App {
         }
     }
 }
+
+
+
+

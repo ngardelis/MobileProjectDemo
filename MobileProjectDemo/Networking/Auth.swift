@@ -18,6 +18,9 @@ final class Auth: ObservableObject {
     // Keep track if the user is logged in or not
     @Published private(set) var isLoggedIn = false
     
+    // Keep track of the current accessToken to make authenticated requests
+    @Published private(set) var accessToken: String?
+    
     func login(username: String, password: String) async throws {
         let path = "https://3nt-demo-backend.azurewebsites.net/Access/Login"
         
@@ -44,10 +47,11 @@ final class Auth: ObservableObject {
         }
         
         // Decode the JSON response using the LoginResponse model
-        guard (try? JSONDecoder().decode(LoginResponse.self, from: data)) != nil else { throw AuthError.decodingError }
+        guard let loginData = try? JSONDecoder().decode(LoginResponse.self, from: data) else { throw AuthError.decodingError }
         
         DispatchQueue.main.async {
             self.isLoggedIn = true
+            self.accessToken = loginData.access_token
         }
     }
 }

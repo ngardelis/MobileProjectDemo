@@ -9,7 +9,7 @@ import SwiftUI
 
 enum NavigationTab: String, CaseIterable {
     // Icons for each navigation tab
-    case main = "ic_book"
+    case books = "ic_book"
     case misc = "ic_misc"
     case profile = "ic_link"
     case settings = "ic_settings"
@@ -17,7 +17,14 @@ enum NavigationTab: String, CaseIterable {
 
 struct NavigationView: View {
     // Current active navigation tab
-    @State private var currentNavTab: NavigationTab = .main
+    @State private var currentNavTab: NavigationTab = .books
+    
+    @EnvironmentObject var auth: Auth
+    var bookService: BookService
+    
+    init(bookService: BookService) {
+        self.bookService = bookService
+    }
     
     var body: some View {
         VStack {
@@ -30,7 +37,7 @@ struct NavigationView: View {
     // View Content based on the selected tab
     private var mainContent: some View {
         TabView(selection: $currentNavTab) {
-            MainView().tag(NavigationTab.main)
+            AvailableBooksView(bookService: bookService).tag(NavigationTab.books)
             MiscView().tag(NavigationTab.misc)
             ProfileView().tag(NavigationTab.profile)
             SettingsView().tag(NavigationTab.settings)
@@ -97,6 +104,12 @@ struct TabButton: View {
     }
 }
 
-#Preview {
-    NavigationView()
+struct Navigation_Preview: PreviewProvider {
+    static var auth = Auth()
+    static var bookService = BookService(auth: auth)
+    
+    static var previews: some View {
+        NavigationView(bookService: bookService)
+            .environmentObject(auth)
+    }
 }
