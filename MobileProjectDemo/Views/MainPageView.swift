@@ -16,6 +16,32 @@ struct MainPageView: View {
     }
 }
 
-#Preview {
-    MainPageView()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+struct MainPage_Preview: PreviewProvider {
+    static var previews: some View {
+        MainPageView()
+    }
 }

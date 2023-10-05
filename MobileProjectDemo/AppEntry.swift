@@ -16,7 +16,8 @@ struct AppEntry: App {
             if auth.isLoggedIn {
                MainPageView()
            } else {
-               LoginView(auth: auth)
+               LoginView()
+                   .environmentObject(auth)
            }
         }
     }

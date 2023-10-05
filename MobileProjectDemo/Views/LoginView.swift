@@ -16,7 +16,7 @@ enum TextFieldMode {
 }
 
 struct LoginView: View {
-    @ObservedObject var auth = Auth()
+    @EnvironmentObject var auth: Auth
     
     // User input states
     @State var username: String = ""
@@ -423,8 +423,9 @@ struct FlagAndLanguage: View {
 
 struct Login_Preview: PreviewProvider {
     static var previews: some View {
-        let auth = Auth()
-        LoginView(auth: auth)
+        @StateObject var auth = Auth()
+        LoginView()
+            .environmentObject(auth)
     }
 }
 
