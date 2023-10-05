@@ -17,12 +17,12 @@ struct TitleView: View {
     var body: some View {
         Rectangle()
             .frame(height: 120)
-            .foregroundColor(.black)
+            .foregroundStyle(.black)
             .overlay(
                 Text(title)
                     .font(.largeTitle)
                     .fontWeight(.semibold)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .offset(y: 10)
             )
             .ignoresSafeArea()

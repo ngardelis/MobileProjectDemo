@@ -14,7 +14,7 @@ struct AppEntry: App {
     var body: some Scene {
         WindowGroup {
             if auth.isLoggedIn {
-               MainPageView()
+               NavigationView()
            } else {
                LoginView()
                    .environmentObject(auth)

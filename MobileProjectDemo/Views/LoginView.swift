@@ -7,10 +7,12 @@
 
 import SwiftUI
 
+// Represents the current language mode for the app
 enum LanguageMode {
     case greek, english
 }
 
+// Represents which text field the user is currently interacting with
 enum TextFieldMode {
     case userID, password, unowned
 }
@@ -84,7 +86,7 @@ struct LoginView: View {
                 Image("btn_rounded")
                 Text(currentLanguage == .greek ? "Σύνδεση" : "Sign In")
                     .font(.title)
-                    .foregroundColor(Color("dollar_bill"))
+                    .foregroundStyle(Color("dollar_bill"))
             }
         }
         .disabled(!canSignIn)
@@ -168,7 +170,7 @@ struct CustomTextField: View {
                 ZStack(alignment: .trailing) {
                     inputField
                         .font(.title3)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(height: 20)
                     errorIcon
                 }
@@ -179,7 +181,7 @@ struct CustomTextField: View {
     
     private var header: some View {
         HStack {
-            Text("\(placeHolder)").font(.title).foregroundColor(.white)
+            Text("\(placeHolder)").font(.title).foregroundStyle(.white)
             infoButton
             Spacer()
             if isPasswordField {
@@ -255,7 +257,7 @@ struct CustomTextField: View {
             Text(currentLanguage == .greek ? "Προβολή" : "Show")
                 .fontWeight(.semibold)
         }
-        .foregroundColor(Color("forest_green"))
+        .foregroundStyle(Color("forest_green"))
         .font(.title3)
     }
 }
@@ -305,7 +307,7 @@ struct ShowInfoView: View {
                 Text("and afterwards 4 numbers")
             }
         }
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .font(.system(size: min(size.width / 10, 18)))
     }
     
@@ -321,7 +323,7 @@ struct ShowInfoView: View {
                 Text("1 special character, 2 numbers)")
             }
         }
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .font(.system(size: min(size.width / 10, 18)))
     }
 }
@@ -337,7 +339,7 @@ struct ChangeLanguageView: View {
                 currentFlagAndLanguage
                     .padding(.horizontal)
                     .frame(width: 200, height: 70)
-                    .background(Capsule().foregroundColor(Color("onyx")))
+                    .background(Capsule().foregroundStyle(Color("onyx")))
                     .overlay(
                         languageOptions.animation(.smooth(duration: 0.1), value: showLanguageOptions),
                         alignment: .topLeading
@@ -366,7 +368,7 @@ struct ChangeLanguageView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 30)
                         .frame(width: 200, height: 140)
-                        .foregroundColor(Color("onyx"))
+                        .foregroundStyle(Color("onyx"))
                     VStack {
                         FlagAndLanguage(flagImage: "usa_flag_icon", languageText: "English")
                             .onTapGesture {
@@ -397,7 +399,7 @@ struct FlagAndLanguage: View {
     var body: some View {
         HStack {
            Image("\(flagImage)")
-           Text("\(languageText)").foregroundColor(.white).font(.title2).offset(x: 5)
+           Text("\(languageText)").foregroundStyle(.white).font(.title2).offset(x: 5)
            Spacer()
         }
     }

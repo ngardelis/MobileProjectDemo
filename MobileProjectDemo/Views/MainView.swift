@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainPageView: View {
+struct MainView: View {
     var body: some View {
         VStack {
             TitleView("Περιοδικά")
@@ -38,10 +38,8 @@ struct MainPageView: View {
 
 
 
-
-
 struct MainPage_Preview: PreviewProvider {
     static var previews: some View {
-        MainPageView()
+        MainView()
     }
 }

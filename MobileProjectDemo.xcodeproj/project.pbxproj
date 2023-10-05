@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		ED0BB6342ACC4EDE00288CF4 /* MainPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */; };
+		ED0BB6342ACC4EDE00288CF4 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6332ACC4EDE00288CF4 /* MainView.swift */; };
 		ED0BB6532ACDCC2100288CF4 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6522ACDCC2100288CF4 /* TitleView.swift */; };
 		ED0BB6552ACE653400288CF4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6542ACE653400288CF4 /* ProfileView.swift */; };
 		ED0BB6572ACE653F00288CF4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6562ACE653F00288CF4 /* SettingsView.swift */; };
 		ED0BB6592ACE655200288CF4 /* MiscView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB6582ACE655200288CF4 /* MiscView.swift */; };
+		ED0BB65D2ACE711E00288CF4 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0BB65C2ACE711E00288CF4 /* NavigationView.swift */; };
 		ED2729432ACC20B9004D18DC /* AppEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2729422ACC20B9004D18DC /* AppEntry.swift */; };
 		ED2729472ACC20BA004D18DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2729462ACC20BA004D18DC /* Assets.xcassets */; };
 		ED27294A2ACC20BA004D18DC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2729492ACC20BA004D18DC /* Preview Assets.xcassets */; };
@@ -20,11 +21,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageView.swift; sourceTree = "<group>"; };
+		ED0BB6332ACC4EDE00288CF4 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		ED0BB6522ACDCC2100288CF4 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		ED0BB6542ACE653400288CF4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		ED0BB6562ACE653F00288CF4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		ED0BB6582ACE655200288CF4 /* MiscView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscView.swift; sourceTree = "<group>"; };
+		ED0BB65C2ACE711E00288CF4 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		ED27293F2ACC20B9004D18DC /* MobileProjectDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileProjectDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2729422ACC20B9004D18DC /* AppEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEntry.swift; sourceTree = "<group>"; };
 		ED2729462ACC20BA004D18DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,13 +57,21 @@
 		ED0BB65A2ACE656300288CF4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				ED0BB6332ACC4EDE00288CF4 /* MainPageView.swift */,
+				ED0BB6332ACC4EDE00288CF4 /* MainView.swift */,
 				ED0BB6582ACE655200288CF4 /* MiscView.swift */,
 				ED0BB6542ACE653400288CF4 /* ProfileView.swift */,
 				ED0BB6562ACE653F00288CF4 /* SettingsView.swift */,
 				ED2729502ACC21FD004D18DC /* LoginView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		ED0BB65B2ACE70FC00288CF4 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				ED0BB65C2ACE711E00288CF4 /* NavigationView.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		ED2729362ACC20B9004D18DC = {
@@ -85,6 +95,7 @@
 			children = (
 				ED2729422ACC20B9004D18DC /* AppEntry.swift */,
 				ED0BB65A2ACE656300288CF4 /* Views */,
+				ED0BB65B2ACE70FC00288CF4 /* Navigation */,
 				ED2729522ACC2513004D18DC /* Networking */,
 				ED0BB6512ACDCC0400288CF4 /* SharedViews */,
 				ED2729462ACC20BA004D18DC /* Assets.xcassets */,
@@ -180,10 +191,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED0BB6592ACE655200288CF4 /* MiscView.swift in Sources */,
+				ED0BB65D2ACE711E00288CF4 /* NavigationView.swift in Sources */,
 				ED0BB6572ACE653F00288CF4 /* SettingsView.swift in Sources */,
 				ED2729512ACC21FD004D18DC /* LoginView.swift in Sources */,
 				ED2729432ACC20B9004D18DC /* AppEntry.swift in Sources */,
-				ED0BB6342ACC4EDE00288CF4 /* MainPageView.swift in Sources */,
+				ED0BB6342ACC4EDE00288CF4 /* MainView.swift in Sources */,
 				ED2729542ACC2718004D18DC /* Auth.swift in Sources */,
 				ED0BB6552ACE653400288CF4 /* ProfileView.swift in Sources */,
 				ED0BB6532ACDCC2100288CF4 /* TitleView.swift in Sources */,
