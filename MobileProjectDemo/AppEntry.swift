@@ -14,8 +14,8 @@ struct AppEntry: App {
     var body: some Scene {
         WindowGroup {
             if auth.isLoggedIn {
-                let bookService = BookService(auth: auth)
-                NavigationView(bookService: bookService)
+                let booksVM = BooksVM(auth: auth)
+                NavigationView(booksVM: booksVM)
                     .environmentObject(auth)
            } else {
                LoginView()

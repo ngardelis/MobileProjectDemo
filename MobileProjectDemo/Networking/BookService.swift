@@ -74,5 +74,11 @@ struct Book: Codable {
     let img_url: String
     let date_released: String
     let pdf_url: String
+    
+    // Convert String to Date
+    var releaseDate: Date? {
+        let formatter = ISO8601DateFormatter()
+        return formatter.date(from: date_released)
+    }
 }
 

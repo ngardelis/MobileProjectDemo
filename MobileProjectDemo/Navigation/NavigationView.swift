@@ -20,10 +20,10 @@ struct NavigationView: View {
     @State private var currentNavTab: NavigationTab = .books
     
     @EnvironmentObject var auth: Auth
-    var bookService: BookService
+    var booksVM: BooksVM
     
-    init(bookService: BookService) {
-        self.bookService = bookService
+    init(booksVM: BooksVM) {
+        self.booksVM = booksVM
     }
     
     var body: some View {
@@ -37,7 +37,7 @@ struct NavigationView: View {
     // View Content based on the selected tab
     private var mainContent: some View {
         TabView(selection: $currentNavTab) {
-            AvailableBooksView(bookService: bookService).tag(NavigationTab.books)
+            BooksView(booksVM: booksVM).tag(NavigationTab.books)
             MiscView().tag(NavigationTab.misc)
             ProfileView().tag(NavigationTab.profile)
             SettingsView().tag(NavigationTab.settings)
@@ -106,10 +106,10 @@ struct TabButton: View {
 
 struct Navigation_Preview: PreviewProvider {
     static var auth = Auth()
-    static var bookService = BookService(auth: auth)
+    static var booksVM = BooksVM(auth: auth)
     
     static var previews: some View {
-        NavigationView(bookService: bookService)
+        NavigationView(booksVM: booksVM)
             .environmentObject(auth)
     }
 }
