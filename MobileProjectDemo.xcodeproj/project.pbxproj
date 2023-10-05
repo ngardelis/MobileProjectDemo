@@ -50,24 +50,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		ED0BB6512ACDCC0400288CF4 /* SharedViews */ = {
+		ED0BB6512ACDCC0400288CF4 /* SharedViewComponents */ = {
 			isa = PBXGroup;
 			children = (
 				ED0BB6522ACDCC2100288CF4 /* TitleView.swift */,
 			);
-			path = SharedViews;
-			sourceTree = "<group>";
-		};
-		ED0BB65A2ACE656300288CF4 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				ED0BB6332ACC4EDE00288CF4 /* BooksView.swift */,
-				ED0BB6582ACE655200288CF4 /* MiscView.swift */,
-				ED0BB6542ACE653400288CF4 /* ProfileView.swift */,
-				ED0BB6562ACE653F00288CF4 /* SettingsView.swift */,
-				ED2729502ACC21FD004D18DC /* LoginView.swift */,
-			);
-			path = Views;
+			path = SharedViewComponents;
 			sourceTree = "<group>";
 		};
 		ED0BB65B2ACE70FC00288CF4 /* Navigation */ = {
@@ -84,6 +72,34 @@
 				ED0BB6642ACEACFE00288CF4 /* BooksVM.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		ED0BB6662ACF08AE00288CF4 /* LoginView */ = {
+			isa = PBXGroup;
+			children = (
+				ED2729502ACC21FD004D18DC /* LoginView.swift */,
+			);
+			path = LoginView;
+			sourceTree = "<group>";
+		};
+		ED0BB6672ACF08C800288CF4 /* TabBarViews */ = {
+			isa = PBXGroup;
+			children = (
+				ED0BB6332ACC4EDE00288CF4 /* BooksView.swift */,
+				ED0BB6582ACE655200288CF4 /* MiscView.swift */,
+				ED0BB6542ACE653400288CF4 /* ProfileView.swift */,
+				ED0BB6562ACE653F00288CF4 /* SettingsView.swift */,
+			);
+			path = TabBarViews;
+			sourceTree = "<group>";
+		};
+		ED0BB6682ACF090E00288CF4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ED0BB6672ACF08C800288CF4 /* TabBarViews */,
+				ED0BB6662ACF08AE00288CF4 /* LoginView */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		ED2729362ACC20B9004D18DC = {
@@ -107,10 +123,10 @@
 			children = (
 				ED2729422ACC20B9004D18DC /* AppEntry.swift */,
 				ED0BB6632ACEACBD00288CF4 /* ViewModels */,
-				ED0BB65A2ACE656300288CF4 /* Views */,
+				ED0BB6682ACF090E00288CF4 /* Views */,
 				ED0BB65B2ACE70FC00288CF4 /* Navigation */,
 				ED2729522ACC2513004D18DC /* Networking */,
-				ED0BB6512ACDCC0400288CF4 /* SharedViews */,
+				ED0BB6512ACDCC0400288CF4 /* SharedViewComponents */,
 				ED2729462ACC20BA004D18DC /* Assets.xcassets */,
 				ED2729482ACC20BA004D18DC /* Preview Content */,
 			);

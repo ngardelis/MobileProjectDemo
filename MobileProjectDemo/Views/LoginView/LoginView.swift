@@ -24,7 +24,9 @@ struct LoginView: View {
     @State var username: String = ""
     @State var password: String = ""
     
+    // Current app's language
     @State var currentLanguage: LanguageMode = .greek
+    // Which text field the user is currently interacting with
     @State var textFieldMode: TextFieldMode = .unowned
     
     @State var showInfo: Bool = false
@@ -37,6 +39,7 @@ struct LoginView: View {
             ZStack {
                 VStack {
                     TitleView(currentLanguage == .greek ? "Σύνδεση" : "Sign In")
+                    // User Input fields
                     UserIDAndPasswordTextFieldsView(
                         username: $username,
                         password: $password,
@@ -48,6 +51,7 @@ struct LoginView: View {
                         size: geometry.size
                     )
                     Spacer()
+                    // Language toggle view
                     ChangeLanguageView(currentLanguage: $currentLanguage)
                     Spacer()
                     Spacer()
@@ -56,6 +60,7 @@ struct LoginView: View {
                 .background( Image("bg_gradient") )
                 .ignoresSafeArea(.keyboard)
                 .alert(isPresented: $showLoginAlert, content: loginAlert)
+                // Display regex hints
                 if showInfo {
                     ShowInfoView(
                         showInfo: $showInfo,
@@ -75,6 +80,7 @@ struct LoginView: View {
     
     private var signInButton: some View {
         Button { 
+            // Display alert if userID or password is invalid, else proceed to login
             if !isValidUserID || !isValidPassword {
                 showLoginAlert = true
             } else {
@@ -92,6 +98,7 @@ struct LoginView: View {
         .disabled(!canSignIn)
     }
     
+    // Construct the alert that's shown when invalid login details are provided
     private func loginAlert() -> Alert {
         let titleText = currentLanguage == .greek ? "Λανθασμένα στοιχεία" : "Wrong credentials"
         let messageText = currentLanguage == .greek ? "Έχετε υποβάλει λάθος στοιχεία" : "You have submitted incorrect details"
@@ -102,15 +109,15 @@ struct LoginView: View {
                      dismissButton: .default(Text(buttonText)))
     }
     
+    // Asynchronous function to authenticate the user using the provided credentials
     func login() {
-        Task {
-            do { try await auth.login(username: username, password: password) }
-            catch { print("Login Error") }
-        }
+        Task { do { try await auth.login(username: username, password: password) } }
     }
 }
 
+// A View displaying both user ID and password text fields
 struct UserIDAndPasswordTextFieldsView: View {
+    // Binding properties to manage the text field data and states
     @Binding var username: String
     @Binding var password: String
     @Binding var currentLanguage: LanguageMode
@@ -118,10 +125,11 @@ struct UserIDAndPasswordTextFieldsView: View {
     @Binding var textFieldMode: TextFieldMode
     @Binding var isValidUserID: Bool
     @Binding var isValidPassword: Bool
-    var size: CGSize
+    var size: CGSize // Size of the parent view
 
     var body: some View {
         VStack(spacing: 40) {
+            // Text field for the username input
             CustomTextField(
                 placeHolder: "UserID",
                 value: $username,
@@ -132,6 +140,7 @@ struct UserIDAndPasswordTextFieldsView: View {
                 isValidPassword: $isValidPassword,
                 size: size
             )
+            // Text field for the password input
             CustomTextField(
                 placeHolder: currentLanguage == .greek ? "Κωδικός" : "Password",
                 value: $password,
@@ -147,10 +156,11 @@ struct UserIDAndPasswordTextFieldsView: View {
     }
 }
 
+// A Customized TextField view with built-in validation, show password, and info functionalities
 struct CustomTextField: View {
     var placeHolder: String
     @Binding var value: String
-    var isPasswordField: Bool = false
+    var isPasswordField: Bool = false // Indicates if this is a password field
     @State var showPassword: Bool = false
     @Binding var currentLanguage: LanguageMode
     @Binding var showInfo: Bool
@@ -158,15 +168,16 @@ struct CustomTextField: View {
     @Binding var isValidUserID: Bool
     @Binding var isValidPassword: Bool
     
-    var size: CGSize
+    var size: CGSize // Size of the parent view
     
+    // Regex patterns for user ID and password validations
     // Declared as static so they aren't recreated every time the body renders
     private static let userIDRegex = "^[A-Z]{2}\\d{4}$"
     private static let passwordRegex = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*\\d.*\\d)(?=.*[a-z].*[a-z].*[a-z]).{8}$"
     
     var body: some View {
             VStack {
-                header
+                header // The header section containing the placeholder and the info button
                 ZStack(alignment: .trailing) {
                     inputField
                         .font(.title3)
@@ -182,14 +193,15 @@ struct CustomTextField: View {
     private var header: some View {
         HStack {
             Text("\(placeHolder)").font(.title).foregroundStyle(.white)
-            infoButton
+            infoButton // Button to display regex information
             Spacer()
             if isPasswordField {
-                showPasswordButton
+                showPasswordButton // Button to toggle password visibility
             }
         }
     }
     
+    // Display the error icon based on the validation results
     private var errorIcon: some View {
         Group {
             if (isPasswordField && !isValidPassword) || (!isPasswordField && !isValidUserID) {
@@ -213,6 +225,7 @@ struct CustomTextField: View {
     
     @ViewBuilder
     private var inputField: some View {
+        // Display either a secure or regular text field based on the `isPasswordField` property
         if isPasswordField {
             if showPassword {
                 TextField("", text: $value)
@@ -230,11 +243,12 @@ struct CustomTextField: View {
     private var dividerBasedOnValidation: some View {
         Divider()
             .frame(height: 2)
-            .background(dividerColor)
+            .background(dividerColor) // Color based on validation state
             .offset(y: -2)
     }
     
     private var dividerColor: Color {
+        // Determine the divider color based on validation state
         if isPasswordField {
             return isValidPassword ? Color("50a235_green") : .red
         } else {
@@ -242,14 +256,19 @@ struct CustomTextField: View {
         }
     }
     
+    // Function to validate password based on the regex pattern
     private func validatePassword(_ password: String) {
+        // If the password is empty, consider it valid. Else, use the regex to validate
         isValidPassword = password.isEmpty ? true : NSPredicate(format: "SELF MATCHES %@", CustomTextField.passwordRegex).evaluate(with: password)
     }
 
+    // Function to validate user ID based on the regex pattern
     private func validateUserID(_ userID: String) {
+        // If the userID is empty, consider it valid. Else, use the regex to validate
         isValidUserID = userID.isEmpty ? true : NSPredicate(format: "SELF MATCHES %@", CustomTextField.userIDRegex).evaluate(with: userID)
     }
     
+    // View for the "show password" button, with text based on the current language
     private var showPasswordButton: some View {
         Button {
             showPassword.toggle()
@@ -262,6 +281,7 @@ struct CustomTextField: View {
     }
 }
 
+// A view component to display regex information about the current text field (either username or password) the user interacts with
 struct ShowInfoView: View {
     @Binding var showInfo: Bool
     @Binding var currentLanguage: LanguageMode
@@ -328,6 +348,7 @@ struct ShowInfoView: View {
     }
 }
 
+// A view component to allow users to change the app's language mode
 struct ChangeLanguageView: View {
     @Binding var currentLanguage: LanguageMode
     @State var showLanguageOptions: Bool = false

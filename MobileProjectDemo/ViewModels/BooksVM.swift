@@ -7,27 +7,32 @@
 
 import SwiftUI
 
+// Enum to represent the state of book download
 enum BookDownloadState {
     case pending, inProgress, completed
 }
 
 class BooksVM: ObservableObject {
+    // Group books by date
     @Published var groupedBooks: [String: [Book]] = [:]
-    @Published var isSavePresented = false
-    @Published var pdfData: Data?
+    // Keep track of the download states of the books
     @Published var bookDownloadStates: [Int: BookDownloadState] = [:]
+    // Keep track of the selected PDF
+    @Published var pdfData: Data?
+    // If true, displays a share sheet to save or view the selected PDF
+    @Published var isSavePresented = false
 
-    // Private Properties
     private let auth: Auth
     private let bookService: BookService
     
+    // Initializes the auth and book service, then fetches the books
     init(auth: Auth) {
         self.auth = auth
         self.bookService = BookService(auth: auth)
         fetchBooks()
     }
 
-    // The objects must be sorted by date
+    // After being fetched, books are sorted by date
     func fetchBooks() {
         Task {
             do {
@@ -50,12 +55,11 @@ class BooksVM: ObservableObject {
                 DispatchQueue.main.async {
                     self.groupedBooks = newGroupedBooks
                 }
-            } catch {
-                // Handle error
             }
         }
     }
 
+    // Downloads the PDF for a given book
     func downloadPDF(for book: Book) {
         guard let url = URL(string: book.pdf_url) else { return }
 
