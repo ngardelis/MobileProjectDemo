@@ -75,10 +75,19 @@ struct Book: Codable {
     let date_released: String
     let pdf_url: String
     
-    // Convert String to Date
+    // Convert date_released String to Date
     var releaseDate: Date? {
         let formatter = ISO8601DateFormatter()
         return formatter.date(from: date_released)
+    }
+    
+    // Convert http to https in the img_url, because AsyncImage has an issue with http
+    var secureImageUrl: String {
+        // Check if it is http and not https
+        if img_url.prefix(5) == "http:" {
+            return "https" + img_url.dropFirst(4)
+        }
+        return img_url
     }
 }
 
