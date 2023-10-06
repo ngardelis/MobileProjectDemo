@@ -28,7 +28,8 @@ struct BooksView: View {
                 ForEach(booksVM.groupedBooks.keys.sorted(), id: \.self) { key in
                     Section(header:
                         HStack {
-                            Text(key).bold() // // Display the year/month as a header
+                            // Display the year/month as a header
+                            Text(key).bold().foregroundStyle(.white)
                             Spacer()
                         }.padding(.leading, 20))
                     {
