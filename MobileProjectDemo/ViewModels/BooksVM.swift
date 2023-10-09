@@ -9,7 +9,9 @@ import SwiftUI
 
 // Enum to represent the state of book download
 enum BookDownloadState {
-    case pending, inProgress, completed
+    case pending
+    case inProgress
+    case completed
 }
 
 class BooksVM: ObservableObject {
