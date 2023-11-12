@@ -44,7 +44,7 @@ struct BooksView: View {
                                         } placeholder: { ProgressView().font(.largeTitle) }
                                         .frame(width: 130, height: 170)
                                         // Display the download state of the book
-                                        if downloadState(for: book) == .pending { Image("ic_download").resizable().frame(width: 60, height: 60)
+                                        if downloadState(for: book) == .pending { Image("ic_download").resizable().frame(width: 50, height: 50)
                                         } else if downloadState(for: book) == .inProgress {
                                             ProgressView(value: 70, total: 100).frame(width: 130)
                                         } else if downloadState(for: book) == .completed {
